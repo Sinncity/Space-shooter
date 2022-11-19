@@ -8,14 +8,16 @@ using Vector3 = UnityEngine.Vector3;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-      private float _speed = 3.5f;
-
+    private float _speed = 3.5f;
     [SerializeField]
     private GameObject _laserPrefab;
-   
+    [SerializeField]
+    private float _fireRate =0.12f;
+    [SerializeField]
+    private float _canFire =-1f;
 
 
-    // Start is called before the first frame update
+ 
     void Start()
     {
     transform.position = new Vector3(0, 0, 0);
@@ -25,19 +27,22 @@ public class Player : MonoBehaviour
     {
     PlayerMoveMent();
 
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
 
-        // if I hit the spacebar Player will fire laser
-
-        if (Input.GetKeyDown(KeyCode.Space ))
         {
-            Instantiate(_laserPrefab,transform.position,Quaternion.identity);
+            FireLaser();
+
         }
 
-
     }
+    
+
+
+    
     void PlayerMoveMent()
       {
             float horizontalInput = Input.GetAxis("Horizontal");
+
             float verticalInput = Input.GetAxis("Vertical");
 
             Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
@@ -61,6 +66,15 @@ public class Player : MonoBehaviour
 
       }
 
+    void FireLaser()
 
+    {
+        
+            _canFire = Time.time + _fireRate;
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+        
+
+    }
+        
 }
 
